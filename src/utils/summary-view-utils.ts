@@ -49,9 +49,10 @@ export function countActiveClimateEntities(
     const state = Reflect.get(hass.states as Record<string, unknown>, id) as
       | { state?: string; attributes?: Record<string, unknown> }
       | undefined;
-    const hvacState = state?.state;
+    if (!state) continue;
+    const hvacState = state.state;
     if (!hvacState || hvacState === 'off' || hvacState === 'unavailable' || hvacState === 'unknown') continue;
-    const hvacAction = state?.attributes?.hvac_action as string | undefined;
+    const hvacAction = state.attributes?.hvac_action as string | undefined;
     if (hvacAction === 'idle' || hvacAction === 'off') continue;
     count++;
   }
